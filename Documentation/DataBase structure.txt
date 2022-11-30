@@ -1,0 +1,79 @@
+PLAYER:
+//informazioni complete giocatore
+DocumentDB - 
+{
+  "_id":"0000",
+  "firstName": "John",
+  "lastName": "Smith",
+  "gender": "man",
+  "role": "portiere",
+  "birthYear": 22,
+  "statsByWeek": [
+    {
+      "week": "1",
+      "goal": "2",
+      "assist":"5"
+    },
+    {
+      "week": "2",
+      "goal": "7",
+      "assist":"1"
+    }
+  ]
+}
+
+
+//media statistiche _OPZIONALE
+KeyValue - (read in shop e collezione)
+_id =  playerID -> {
+						"TotalGoal":7,
+						"TotalAssist":6,
+						"MinutesPlayed":1500,
+						"Rate":8
+					}
+
+
+
+
+
+USER'S PLAYER COLLECTION:
+//giocatori posseduti da utente
+KeyValue - _id = userID::playerID -> quantity
+ 
+
+USER:
+//info utente
+DocumentDB
+{
+	"_id":"0000",
+	"nickname":"pippo1",
+	"password":"3456",
+    "formation":[
+		{
+			"week":"1",
+			"formation":"442",
+			"players"[19]:...
+		},
+
+		{
+			"week":"2",
+			"formation":"442",
+			"players"[19]:...
+		},
+
+	]
+}
+
+
+
+
+TRADE:
+//info scambi
+DocumentDB -
+{
+	"_id":"0000"
+	"timestamp":"date"
+	"user":"pippo1"
+	"playerTo":""
+	"playerFrom":""
+}
