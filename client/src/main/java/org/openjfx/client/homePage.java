@@ -39,7 +39,7 @@ public class homePage {
         HBox titleSpacePane=new HBox();
         Text titoloText=new Text("FantaManager1");
         titoloText.getStyleClass().add("titoloApp");
-        Image ballIcon=new Image(new FileInputStream("src/main/java/imm/ballicon_white.png"));
+        Image ballIcon=new Image(new FileInputStream("client/src/main/java/imm/ballicon_white.png"));
         ImageView ballView = new ImageView(ballIcon);
         ballView.getStyleClass().add("immagineTitoloApp");
         ballView.setFitHeight(80);
@@ -89,7 +89,7 @@ public class homePage {
 		VBox box=new VBox();
 		Text text=new Text(titolo);
 		text.getStyleClass().add("choiseText");
-		Image icon=new Image(new FileInputStream("src/main/java/imm/"+imm));
+		Image icon=new Image(new FileInputStream("client/src/main/java/imm/"+imm));
 		ImageView iconView=new ImageView(icon);
 		iconView.setFitHeight(70);
         iconView.setFitWidth(70);
