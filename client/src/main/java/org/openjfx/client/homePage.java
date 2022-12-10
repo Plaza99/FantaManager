@@ -37,7 +37,7 @@ public class homePage {
         // titolo e spazio sopra
         HBox upperSpacePane=new HBox();
         HBox titleSpacePane=new HBox();
-        Text titoloText=new Text("FantaManager");
+        Text titoloText=new Text("FantaManager1");
         titoloText.getStyleClass().add("titoloApp");
         Image ballIcon=new Image(new FileInputStream("src/main/java/imm/ballicon_white.png"));
         ImageView ballView = new ImageView(ballIcon);
