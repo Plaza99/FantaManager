@@ -18,7 +18,6 @@ public class App extends Application {
 	        scene = new Scene(homePage.getHome(primaryStageMain), global.widthMenu, global.heightMenu);
 	        // Set the scene in primary stage  
 	        primaryStage.setScene(scene);
-	        
 	        primaryStage.show();
 	    }
 
