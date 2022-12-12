@@ -1,0 +1,23 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+.titoloApp{
+	-fx-font-family: Arial, Helvetica, sans-serif;
+	-fx-font-size: 40px;
+	-fx-font-weight: bold;
+	-fx-fill:WHITE;
+}
+.immagineTitoloApp{
+	-fx-padding: 100px;
+	-fx-pref-width:80px;
+	-fx-pref-height:80px;
+}
+.choiseText{
+	-fx-font-family: Arial;
+	-fx-font-size:20px;
+	-fx-fill:WHITE;
+}
+.choise{
+	-fx-border-color: WHITE;
+}
+.choise:hover{
+	-fx-border-color:Yellow;
+}

@@ -4,7 +4,41 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="60f30193-0598-487d-9109-87a1b93466e0" name="Changes" comment="updates" />
+    <list default="true" id="60f30193-0598-487d-9109-87a1b93466e0" name="Changes" comment="updates">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/main/java/imm/homeButtonIcon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/client/src/main/java/org/openjfx/client/graphics/global.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/client/client.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/home.css" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/resources/home.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/org/openjfx/client/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/org/openjfx/client/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/org/openjfx/client/formationPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/org/openjfx/client/graphics/formationPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/org/openjfx/client/global.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/org/openjfx/client/homePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/org/openjfx/client/graphics/homePage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/org/openjfx/client/optionPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/org/openjfx/client/graphics/optionPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/org/openjfx/client/rankingPage.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/org/openjfx/client/graphics/rankingPage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/src/main/java/org/openjfx/client/tradePage.java" beforeDir="false" afterPath="$PROJECT_DIR$/client/src/main/java/org/openjfx/client/graphics/tradePage.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/META-INF/maven/org.openjfx/client/pom.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/META-INF/maven/org.openjfx/client/pom.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/imm/ballicon_white.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/imm/formation_white.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/imm/option.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/imm/podio.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/imm/trade.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/client/target/classes/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/org/openjfx/client/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/client/target/classes/org/openjfx/client/App.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/org/openjfx/client/formationPage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/org/openjfx/client/global.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/org/openjfx/client/homePage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/org/openjfx/client/optionPage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/org/openjfx/client/rankingPage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/client/target/classes/org/openjfx/client/tradePage.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prova_importMatch/src/main/java/it/unipi/lsmsd/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/prova_importMatch/src/main/java/it/unipi/lsmsd/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/prova_importMatch/target/classes/it/unipi/lsmsd/App.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/prova_importMatch/target/test-classes/it/unipi/lsmsd/AppTest.class" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -12,6 +46,19 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="d407a542-ed13-49a2-a67d-8079917660ce" />
+        <option name="url" value="https://github.com/Plaza99/FantaManager.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -31,19 +78,31 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;15&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "jdk.selected.JAVA_MODULE": "15",
+    "last_opened_file_path": "C:/Users/edoar/Documents/GitHub/FantaManager/client/src/main/java/imm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "vcs.Git"
   }
-}</component>
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\edoar\Documents\GitHub\FantaManager\client\src\main\java\imm" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\edoar\Documents\GitHub\FantaManager\client\src\main\resources" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="org.openjfx.client.graphics" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
