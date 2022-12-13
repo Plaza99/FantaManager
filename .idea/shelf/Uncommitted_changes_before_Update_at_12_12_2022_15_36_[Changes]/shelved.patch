@@ -1,0 +1,506 @@
+Index: prova_importMatch/src/main/java/it/unipi/lsmsd/App.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package it.unipi.lsmsd;\r\nimport static com.mongodb.client.model.Aggregates.*;\r\nimport static com.mongodb.client.model.Filters.*;\r\nimport static com.mongodb.client.model.Indexes.descending;\r\nimport static com.mongodb.client.model.Projections.*;\r\n\r\nimport com.mongodb.client.*;\r\nimport com.mongodb.client.model.*;\r\n\r\nimport com.mongodb.client.result.UpdateResult;\r\nimport org.bson.Document;\r\nimport org.bson.conversions.Bson;\r\n\r\nimport java.text.SimpleDateFormat;\r\nimport java.time.format.DateTimeFormatter;\r\nimport java.util.ArrayList;\r\nimport java.util.Arrays;\r\nimport java.util.Scanner;\r\nimport java.util.regex.Pattern;\r\nimport java.util.Date;\r\n\r\nimport java.io.FileNotFoundException;\r\nimport java.io.FileReader;\r\nimport java.io.IOException;\r\n\r\nimport org.json.simple.JSONArray;\r\nimport org.json.simple.JSONObject;\r\nimport org.json.simple.parser.JSONParser;\r\nimport org.json.simple.parser.ParseException;\r\n\r\n/**\r\n * Hello world!\r\n *\r\n */\r\npublic class App \r\n{\r\n    public static void main( String[] args )\r\n    {\r\n\r\n        System.out.println( \"Quale giornata vuoi calcolare?\" );\r\n\r\n        Scanner scanner=new Scanner(System.in);\r\n\r\n        retrieve_info_matchday(scanner.nextInt());\r\n\r\n\r\n    }\r\n\r\n    public static void retrieve_info_matchday(Integer matchday){\r\n        String url = \"mongodb://localhost:27017\";\r\n        MongoClient mongoClient2 = MongoClients.create(url);\r\n\r\n        // Access a Database\r\n        MongoDatabase database2 = mongoClient2.getDatabase(\"fantamongo\");\r\n\r\n        // Access a Collection\r\n        MongoCollection<Document> coll = database2.getCollection(\"fantacalcio\");\r\n\r\n        JSONParser jsonParser = new JSONParser();\r\n\r\n        try (FileReader reader = new FileReader(\"C:\\\\Users\\\\matte\\\\DataMiningJupyter\\\\fantacalcio_LS5.json\"))\r\n        {\r\n            //Read JSON file\r\n            Object obj = jsonParser.parse(reader);\r\n\r\n            JSONArray playerList = (JSONArray) obj;\r\n            //System.out.println(playerList);\r\n\r\n            //Iterate over player array\r\n            playerList.forEach( player -> parsePlayerObject( (JSONObject) player, matchday ,coll) );\r\n\r\n        } //catch (FileNotFoundException e) {\r\n        //e.printStackTrace();\r\n        //}\r\n        catch (IOException e) {\r\n            e.printStackTrace();\r\n        } catch (org.json.simple.parser.ParseException e) {\r\n            e.printStackTrace();\r\n        }\r\n    }\r\n\r\n    private static void parsePlayerObject(JSONObject player, Integer matchday, MongoCollection<Document> coll)\r\n    {\r\n\r\n        //JSONObject playerObj = (JSONObject) player.get(\"Player\");\r\n        String name = (String) player.get(\"Player\");\r\n        System.out.println(name);\r\n\r\n        //Get player object within list\r\n        JSONObject playerObject = (JSONObject) player.get(\"statistiche\");\r\n\r\n        //Get player first name\r\n        JSONObject matchday_ins = (JSONObject) playerObject.get(\"matchday\"+matchday);\r\n        System.out.println(matchday_ins);\r\n\r\n        //take info from understat\r\n        /*JSONParser jsonParser = new JSONParser();\r\n\r\n        try (FileReader reader = new FileReader(\"C:\\\\Users\\\\matte\\\\OneDrive\\\\Desktop\\\\LargeScale\\\\jsonEdo\\\\understat_file\\\\statsUnderstatMatchday\"+matchday+\".json\"))\r\n        {\r\n            //Read JSON file\r\n            Object obj = jsonParser.parse(reader);\r\n\r\n            JSONArray playerList = (JSONArray) obj;\r\n\r\n            JSONObject playerObj = (JSONObject) playerList.get(0);\r\n\r\n            JSONArray pla= (JSONArray) playerObj.get(\"stats\");\r\n            //System.out.println(playerObj);\r\n            //JSONArray pla=(JSONArray) match.get(\"a\");\r\n\r\n\r\n            //Iterate over player array\r\n            pla.forEach( player_understat -> parseUnderstatObject( (JSONObject) player_understat) );\r\n\r\n        } //catch (FileNotFoundException e) {\r\n        //e.printStackTrace();\r\n        //}\r\n        catch (IOException e) {\r\n            e.printStackTrace();\r\n        } catch (ParseException e) {\r\n            e.printStackTrace();\r\n        }*/\r\n\r\n        //update collection\r\n        //dovremo mettere \"name\" al posto di \"Player\" qui sotto\r\n        //UpdateResult player1 = coll.updateOne(eq(\"Player\", name),set(\"matchday\"+matchday, matchday_ins));\r\n        Bson filter=Filters.eq(\"Player\",name);\r\n        Bson update=Updates.set(\"statistiche.matchday\"+matchday,matchday_ins);\r\n        UpdateOptions options = new UpdateOptions().upsert(true);\r\n        System.out.println(coll.updateOne(filter, update, options));\r\n\r\n    }\r\n\r\n    private static void parseUnderstatObject(JSONObject player_understat/*, Integer matchday, JSONObject matchday_ins*/) {\r\n        //JSONObject playerObj = (JSONObject) player.get(\"Player\");\r\n        //String name = (String) player_understat.get(\"stats\");\r\n        //System.out.println(name);\r\n\r\n        //System.out.println(player_understat);\r\n\r\n        //Get player object within list\r\n        JSONObject playerObject = (JSONObject) player_understat.get(\"a\");\r\n\r\n        System.out.println(playerObject);\r\n\r\n        //Get player first name\r\n        //JSONObject mat = (JSONObject) playerObject.get(\"matchday\"+matchday);\r\n        //System.out.println(matchday_ins);\r\n        //ArrayList<String> key= new ArrayList<>();\r\n        String key= playerObject.keySet().toString();\r\n        System.out.println(key);\r\n\r\n        String[] keys=key.split(\", \");\r\n\r\n        for(int i=0;i<keys.length;i++){\r\n\r\n            System.out.println(keys[i]);\r\n\r\n            JSONObject elem=(JSONObject) playerObject.get(keys[i]);\r\n            System.out.println(elem);\r\n\r\n            //String  xG= (String) elem.get(\"xG\");\r\n            //System.out.println(xG);\r\n            /*\r\n            String  xA= (String) elem.get(\"xA\");\r\n            System.out.println(xA);\r\n\r\n            String  xGChain= (String) elem.get(\"xGChain\");\r\n            System.out.println(xGChain);\r\n\r\n            String  xGBuildup= (String) elem.get(\"xGBuildup\");\r\n            System.out.println(xGBuildup);*/\r\n\r\n        }\r\n\r\n\r\n        //JSONObject elem=(JSONObject) playerObject.get(key);\r\n\r\n        //System.out.println(elem);\r\n\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/prova_importMatch/src/main/java/it/unipi/lsmsd/App.java b/prova_importMatch/src/main/java/it/unipi/lsmsd/App.java
+--- a/prova_importMatch/src/main/java/it/unipi/lsmsd/App.java	(revision 83113d5a52fdc9c200138b63758ded0707c9c450)
++++ b/prova_importMatch/src/main/java/it/unipi/lsmsd/App.java	(date 1670855572456)
+@@ -32,6 +32,7 @@
+  * Hello world!
+  *
+  */
++/*
+ public class App 
+ {
+     public static void main( String[] args )
+@@ -125,14 +126,14 @@
+         //update collection
+         //dovremo mettere "name" al posto di "Player" qui sotto
+         //UpdateResult player1 = coll.updateOne(eq("Player", name),set("matchday"+matchday, matchday_ins));
+-        Bson filter=Filters.eq("Player",name);
++       /* Bson filter=Filters.eq("Player",name);
+         Bson update=Updates.set("statistiche.matchday"+matchday,matchday_ins);
+         UpdateOptions options = new UpdateOptions().upsert(true);
+         System.out.println(coll.updateOne(filter, update, options));
+ 
+     }
+ 
+-    private static void parseUnderstatObject(JSONObject player_understat/*, Integer matchday, JSONObject matchday_ins*/) {
++    private static void parseUnderstatObject(JSONObject player_understat/*, Integer matchday, JSONObject matchday_ins*//*) {
+         //JSONObject playerObj = (JSONObject) player.get("Player");
+         //String name = (String) player_understat.get("stats");
+         //System.out.println(name);
+@@ -172,6 +173,196 @@
+             String  xGBuildup= (String) elem.get("xGBuildup");
+             System.out.println(xGBuildup);*/
+ 
++        /*}
++
++
++        //JSONObject elem=(JSONObject) playerObject.get(key);
++
++        //System.out.println(elem);
++
++    }
++
++} */
++
++/**
++ * Hello world!
++ *
++ */
++public class App
++{
++    public static void main( String[] args )
++    {
++
++        System.out.println( "Quale giornata vuoi calcolare?" );
++
++        Scanner scanner=new Scanner(System.in);
++
++        retrieve_info_matchday(scanner.nextInt());
++
++
++    }
++
++    public static void retrieve_info_matchday(Integer matchday){
++        String url = "mongodb://localhost:27017";
++        MongoClient mongoClient2 = MongoClients.create(url);
++
++        // Access a Database
++        MongoDatabase database2 = mongoClient2.getDatabase("fantamongo");
++
++        // Access a Collection
++        MongoCollection<Document> coll = database2.getCollection("fantacalcio");
++
++        JSONParser jsonParser = new JSONParser();
++
++        try (FileReader reader = new FileReader("C:\\Users\\matte\\DataMiningJupyter\\fantacalcio_LS5.json"))
++        {
++            //Read JSON file
++            Object obj = jsonParser.parse(reader);
++
++            JSONArray playerList = (JSONArray) obj;
++            //System.out.println(playerList);
++
++            //Iterate over player array
++            playerList.forEach( player -> parsePlayerObject( (JSONObject) player, matchday ,coll) );
++
++        } //catch (FileNotFoundException e) {
++        //e.printStackTrace();
++        //}
++        catch (IOException e) {
++            e.printStackTrace();
++        } catch (org.json.simple.parser.ParseException e) {
++            e.printStackTrace();
++        }
++    }
++
++    private static void parsePlayerObject(JSONObject player, Integer matchday, MongoCollection<Document> coll)
++    {
++
++        //JSONObject playerObj = (JSONObject) player.get("Player");
++        String name = (String) player.get("Player");
++        System.out.println(name);
++
++        //Get player object within list
++        JSONObject playerObject = (JSONObject) player.get("statistiche");
++
++        //Get player first name
++        JSONObject matchday_ins = (JSONObject) playerObject.get("matchday"+matchday);
++        matchday_ins.put("xG",0);
++        matchday_ins.put("xA",0);
++        matchday_ins.put("xGChain",0);
++        matchday_ins.put("xGBuildup",0);
++        System.out.println(matchday_ins);
++
++        //take info from understat
++        take_from_understat(matchday,matchday_ins,name);
++
++        System.out.println("AFTER UNDERSTAT"+matchday_ins);
++        //update collection
++        //dovremo mettere "name" al posto di "Player" qui sotto
++        //UpdateResult player1 = coll.updateOne(eq("Player", name),set("matchday"+matchday, matchday_ins));
++        Bson filter=Filters.eq("Player",name);
++        Bson update=Updates.set("statistiche.matchday"+matchday,matchday_ins);
++        UpdateOptions options = new UpdateOptions().upsert(true);
++        System.out.println(coll.updateOne(filter, update, options));
++
++    }
++
++    public static void take_from_understat(Integer matchday,JSONObject matchday_ins, String name_player){
++        JSONParser jsonParser = new JSONParser();
++
++        try (FileReader reader = new FileReader("C:\\Users\\matte\\OneDrive\\Desktop\\LargeScale\\jsonEdo\\understat_file\\statsUnderstatMatchday"+matchday+".json"))
++        {
++            //Read JSON file
++            Object obj = jsonParser.parse(reader);
++
++            JSONArray playerList = (JSONArray) obj;
++
++            JSONObject playerObj = (JSONObject) playerList.get(0);
++
++            JSONArray pla= (JSONArray) playerObj.get("stats");
++            //System.out.println(playerObj);
++            //JSONArray pla=(JSONArray) match.get("a");
++
++
++            //Iterate over player array
++            pla.forEach( player_understat -> parseUnderstatObject( (JSONObject) player_understat,matchday,matchday_ins,name_player ));
++
++
++
++        } //catch (FileNotFoundException e) {
++        //e.printStackTrace();
++        //}
++        catch (IOException e) {
++            e.printStackTrace();
++        } catch (ParseException e) {
++            e.printStackTrace();
++        }
++    }
++
++    private static void parseUnderstatObject(JSONObject player_understat, Integer matchday, JSONObject matchday_ins,String name) {
++        //JSONObject playerObj = (JSONObject) player.get("Player");
++        //String name = (String) player_understat.get("stats");
++        //System.out.println(name);
++
++        //System.out.println(player_understat);
++
++        //Get player object within list
++        JSONObject playerObject = (JSONObject) player_understat.get("a");
++
++        System.out.println(playerObject);
++
++        //Get player first name
++        //JSONObject mat = (JSONObject) playerObject.get("matchday"+matchday);
++        //System.out.println(matchday_ins);
++        //ArrayList<String> key= new ArrayList<>();
++        String key= playerObject.keySet().toString();
++        System.out.println(key);
++
++        key=key.substring(1,key.length()-1);
++        String[] keys=key.split(", ");
++
++        for(int i=0;i<keys.length;i++){
++
++            //System.out.println(keys[i]);
++
++            JSONObject elem=(JSONObject) playerObject.get(keys[i]);
++            //System.out.println(elem);
++
++            String  player= (String) elem.get("player");  //DEVI TRASFORMARE QUESTO Lorenzo De Silvestri, in L.De Silvestri
++            //System.out.println(player);
++
++            player=trasformation(player);
++            System.out.println(name);
++
++            System.out.println(player.length());
++            System.out.println(name.length());
++
++            if(name.equals(player)) {
++
++                System.out.println("MATCHHHHHHH----------------------------------------------------");
++
++                String xG = (String) elem.get("xG");
++                System.out.println(xG);
++
++                String xA = (String) elem.get("xA");
++                System.out.println(xA);
++
++                String xGChain = (String) elem.get("xGChain");
++                System.out.println(xGChain);
++
++                String xGBuildup = (String) elem.get("xGBuildup");
++                System.out.println(xGBuildup);
++
++                matchday_ins.put("xG",xG);
++                matchday_ins.put("xA",xA);
++                matchday_ins.put("xGChain",xGChain);
++                matchday_ins.put("xGBuildup",xGBuildup);
++
++                System.out.println(matchday_ins);
++
++                break;
++            }
++
+         }
+ 
+ 
+@@ -181,4 +372,18 @@
+ 
+     }
+ 
++    private static String trasformation(String player) {
++
++        String[] words=player.split(" ");
++        //System.out.println(words[0]);
++        if(words.length>1) {
++            player = words[0].charAt(0) + ". " + words[1];
++        }
++        else{
++            player=words[0];
++        }
++        System.out.println("PLAYER TRASFORM:"+player);
++        return player;
++    }
++
+ }
+Index: client/target/classes/META-INF/MANIFEST.MF
+===================================================================
+diff --git a/client/target/classes/META-INF/MANIFEST.MF b/client/target/classes/META-INF/MANIFEST.MF
+deleted file mode 100644
+--- a/client/target/classes/META-INF/MANIFEST.MF	(revision 83113d5a52fdc9c200138b63758ded0707c9c450)
++++ /dev/null	(revision 83113d5a52fdc9c200138b63758ded0707c9c450)
+@@ -1,5 +0,0 @@
+-Manifest-Version: 1.0
+-Built-By: edoar
+-Build-Jdk: 17.0.4.1
+-Created-By: Maven Integration for Eclipse
+-
+Index: client/target/classes/home.css
+===================================================================
+diff --git a/client/target/classes/home.css b/client/target/classes/home.css
+deleted file mode 100644
+--- a/client/target/classes/home.css	(revision 83113d5a52fdc9c200138b63758ded0707c9c450)
++++ /dev/null	(revision 83113d5a52fdc9c200138b63758ded0707c9c450)
+@@ -1,23 +0,0 @@
+-/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+-.titoloApp{
+-	-fx-font-family: Arial, Helvetica, sans-serif;
+-	-fx-font-size: 40px;
+-	-fx-font-weight: bold;
+-	-fx-fill:WHITE;
+-}
+-.immagineTitoloApp{
+-	-fx-padding: 100px;
+-	-fx-pref-width:80px;
+-	-fx-pref-height:80px;
+-}
+-.choiseText{
+-	-fx-font-family: Arial;
+-	-fx-font-size:20px;
+-	-fx-fill:WHITE;
+-}
+-.choise{
+-	-fx-border-color: WHITE;
+-}
+-.choise:hover{
+-	-fx-border-color:Yellow;
+-}
+\ No newline at end of file
+Index: client/target/classes/META-INF/maven/org.openjfx/client/pom.xml
+===================================================================
+diff --git a/client/target/classes/META-INF/maven/org.openjfx/client/pom.xml b/client/target/classes/META-INF/maven/org.openjfx/client/pom.xml
+deleted file mode 100644
+--- a/client/target/classes/META-INF/maven/org.openjfx/client/pom.xml	(revision 83113d5a52fdc9c200138b63758ded0707c9c450)
++++ /dev/null	(revision 83113d5a52fdc9c200138b63758ded0707c9c450)
+@@ -1,46 +0,0 @@
+-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+-    <modelVersion>4.0.0</modelVersion>
+-    <groupId>org.openjfx</groupId>
+-    <artifactId>client</artifactId>
+-    <version>0.0.1-SNAPSHOT</version>
+-    <properties>
+-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+-        <maven.compiler.source>11</maven.compiler.source>
+-        <maven.compiler.target>11</maven.compiler.target>
+-    </properties>
+-    <dependencies>
+-        <dependency>
+-            <groupId>org.openjfx</groupId>
+-            <artifactId>javafx-controls</artifactId>
+-            <version>13</version>
+-        </dependency>
+-    </dependencies>
+-    <build>
+-        <plugins>
+-            <plugin>
+-                <groupId>org.apache.maven.plugins</groupId>
+-                <artifactId>maven-compiler-plugin</artifactId>
+-                <version>3.8.0</version>
+-                <configuration>
+-                    <release>11</release>
+-                </configuration>
+-            </plugin>
+-            <plugin>
+-                <groupId>org.openjfx</groupId>
+-                <artifactId>javafx-maven-plugin</artifactId>
+-                <version>0.0.6</version>
+-                <executions>
+-                    <execution>
+-                        <!-- Default configuration for running -->
+-                        <!-- Usage: mvn clean javafx:run -->
+-                        <id>default-cli</id>
+-                        <configuration>
+-                            <mainClass>org.openjfx.client.App</mainClass>
+-                        </configuration>
+-                    </execution>
+-                </executions>
+-            </plugin>
+-        </plugins>
+-    </build>
+-</project>
+Index: client/target/classes/META-INF/maven/org.openjfx/client/pom.properties
+===================================================================
+diff --git a/client/target/classes/META-INF/maven/org.openjfx/client/pom.properties b/client/target/classes/META-INF/maven/org.openjfx/client/pom.properties
+deleted file mode 100644
+--- a/client/target/classes/META-INF/maven/org.openjfx/client/pom.properties	(revision 83113d5a52fdc9c200138b63758ded0707c9c450)
++++ /dev/null	(revision 83113d5a52fdc9c200138b63758ded0707c9c450)
+@@ -1,7 +0,0 @@
+-#Generated by Maven Integration for Eclipse
+-#Sat Dec 10 18:00:24 CET 2022
+-m2e.projectLocation=C\:\\Users\\edoar\\eclipse-workspace\\client
+-m2e.projectName=client
+-groupId=org.openjfx
+-artifactId=client
+-version=0.0.1-SNAPSHOT
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"ProjectModuleManager\">\r\n    <modules>\r\n      <module fileurl=\"file://$PROJECT_DIR$/.idea/FantaManager.iml\" filepath=\"$PROJECT_DIR$/.idea/FantaManager.iml\" />\r\n      <module fileurl=\"file://$PROJECT_DIR$/client/client.iml\" filepath=\"$PROJECT_DIR$/client/client.iml\" />\r\n    </modules>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+--- a/.idea/modules.xml	(revision 83113d5a52fdc9c200138b63758ded0707c9c450)
++++ b/.idea/modules.xml	(date 1670772297944)
+@@ -4,6 +4,7 @@
+     <modules>
+       <module fileurl="file://$PROJECT_DIR$/.idea/FantaManager.iml" filepath="$PROJECT_DIR$/.idea/FantaManager.iml" />
+       <module fileurl="file://$PROJECT_DIR$/client/client.iml" filepath="$PROJECT_DIR$/client/client.iml" />
++      <module fileurl="file://$PROJECT_DIR$/prova_importMatch/prova_importMatch.iml" filepath="$PROJECT_DIR$/prova_importMatch/prova_importMatch.iml" />
+     </modules>
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"MavenProjectsManager\">\r\n    <option name=\"originalFiles\">\r\n      <list>\r\n        <option value=\"$PROJECT_DIR$/client/pom.xml\" />\r\n      </list>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_15\" default=\"true\" project-jdk-name=\"15\" project-jdk-type=\"JavaSDK\" />\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+--- a/.idea/misc.xml	(revision 83113d5a52fdc9c200138b63758ded0707c9c450)
++++ b/.idea/misc.xml	(date 1670844980920)
+@@ -4,8 +4,9 @@
+     <option name="originalFiles">
+       <list>
+         <option value="$PROJECT_DIR$/client/pom.xml" />
++        <option value="$PROJECT_DIR$/prova_importMatch/pom.xml" />
+       </list>
+     </option>
+   </component>
+-  <component name="ProjectRootManager" version="2" languageLevel="JDK_15" default="true" project-jdk-name="15" project-jdk-type="JavaSDK" />
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_19" default="true" project-jdk-name="19" project-jdk-type="JavaSDK" />
+ </project>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"AutoImportSettings\">\r\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\r\n  </component>\r\n  <component name=\"ChangeListManager\">\r\n    <list default=\"true\" id=\"60f30193-0598-487d-9109-87a1b93466e0\" name=\"Changes\" comment=\"updates\">\r\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\r\n    </list>\r\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\r\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\r\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\r\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\r\n  </component>\r\n  <component name=\"Git.Settings\">\r\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\r\n  </component>\r\n  <component name=\"MarkdownSettingsMigration\">\r\n    <option name=\"stateVersion\" value=\"1\" />\r\n  </component>\r\n  <component name=\"MavenImportPreferences\">\r\n    <option name=\"generalSettings\">\r\n      <MavenGeneralSettings>\r\n        <option name=\"useMavenConfig\" value=\"true\" />\r\n      </MavenGeneralSettings>\r\n    </option>\r\n  </component>\r\n  <component name=\"ProjectId\" id=\"2IjUeSmt3Ymlb6CuLAvyNHiM9BW\" />\r\n  <component name=\"ProjectLevelVcsManager\">\r\n    <ConfirmationsSetting value=\"2\" id=\"Add\" />\r\n  </component>\r\n  <component name=\"ProjectViewState\">\r\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\r\n    <option name=\"showLibraryContents\" value=\"true\" />\r\n  </component>\r\n  <component name=\"PropertiesComponent\"><![CDATA[{\r\n  \"keyToString\": {\r\n    \"ASKED_ADD_EXTERNAL_FILES\": \"true\",\r\n    \"RunOnceActivity.OpenProjectViewOnStart\": \"true\",\r\n    \"RunOnceActivity.ShowReadmeOnStart\": \"true\",\r\n    \"SHARE_PROJECT_CONFIGURATION_FILES\": \"true\",\r\n    \"settings.editor.selected.configurable\": \"vcs.Git\"\r\n  }\r\n}]]></component>\r\n  <component name=\"SpellCheckerSettings\" RuntimeDictionaries=\"0\" Folders=\"0\" CustomDictionaries=\"0\" DefaultDictionary=\"application-level\" UseSingleDictionary=\"true\" transferred=\"true\" />\r\n  <component name=\"TaskManager\">\r\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\r\n      <changelist id=\"60f30193-0598-487d-9109-87a1b93466e0\" name=\"Changes\" comment=\"\" />\r\n      <created>1670694586333</created>\r\n      <option name=\"number\" value=\"Default\" />\r\n      <option name=\"presentableId\" value=\"Default\" />\r\n      <updated>1670694586333</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00001\" summary=\"updates\">\r\n      <created>1670695945621</created>\r\n      <option name=\"number\" value=\"00001\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00001\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1670695945622</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00002\" summary=\"updates\">\r\n      <created>1670768171824</created>\r\n      <option name=\"number\" value=\"00002\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00002\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1670768171824</updated>\r\n    </task>\r\n    <task id=\"LOCAL-00003\" summary=\"updates\">\r\n      <created>1670768225275</created>\r\n      <option name=\"number\" value=\"00003\" />\r\n      <option name=\"presentableId\" value=\"LOCAL-00003\" />\r\n      <option name=\"project\" value=\"LOCAL\" />\r\n      <updated>1670768225275</updated>\r\n    </task>\r\n    <option name=\"localTasksCounter\" value=\"4\" />\r\n    <servers />\r\n  </component>\r\n  <component name=\"Vcs.Log.Tabs.Properties\">\r\n    <option name=\"TAB_STATES\">\r\n      <map>\r\n        <entry key=\"MAIN\">\r\n          <value>\r\n            <State>\r\n              <option name=\"FILTERS\">\r\n                <map>\r\n                  <entry key=\"branch\">\r\n                    <value>\r\n                      <list>\r\n                        <option value=\"origin/main\" />\r\n                      </list>\r\n                    </value>\r\n                  </entry>\r\n                </map>\r\n              </option>\r\n            </State>\r\n          </value>\r\n        </entry>\r\n      </map>\r\n    </option>\r\n  </component>\r\n  <component name=\"VcsManagerConfiguration\">\r\n    <option name=\"ADD_EXTERNAL_FILES_SILENTLY\" value=\"true\" />\r\n    <MESSAGE value=\"updates\" />\r\n    <option name=\"LAST_COMMIT_MESSAGE\" value=\"updates\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 83113d5a52fdc9c200138b63758ded0707c9c450)
++++ b/.idea/workspace.xml	(date 1670855572580)
+@@ -5,7 +5,23 @@
+   </component>
+   <component name="ChangeListManager">
+     <list default="true" id="60f30193-0598-487d-9109-87a1b93466e0" name="Changes" comment="updates">
++      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/client/target/classes/META-INF/MANIFEST.MF" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/client/target/classes/META-INF/maven/org.openjfx/client/pom.properties" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/client/target/classes/META-INF/maven/org.openjfx/client/pom.xml" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/client/target/classes/home.css" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/client/target/classes/imm/ballicon_white.png" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/client/target/classes/imm/formation_white.png" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/client/target/classes/imm/option.png" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/client/target/classes/imm/podio.png" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/client/target/classes/imm/trade.png" beforeDir="false" />
++      <change beforePath="$PROJECT_DIR$/client/target/classes/org/openjfx/client/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/client/target/classes/org/openjfx/client/App.class" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/prova_importMatch/src/main/java/it/unipi/lsmsd/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/prova_importMatch/src/main/java/it/unipi/lsmsd/App.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/prova_importMatch/target/classes/it/unipi/lsmsd/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/prova_importMatch/target/classes/it/unipi/lsmsd/App.class" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -33,15 +49,18 @@
+     <option name="hideEmptyMiddlePackages" value="true" />
+     <option name="showLibraryContents" value="true" />
+   </component>
+-  <component name="PropertiesComponent"><![CDATA[{
+-  "keyToString": {
+-    "ASKED_ADD_EXTERNAL_FILES": "true",
+-    "RunOnceActivity.OpenProjectViewOnStart": "true",
+-    "RunOnceActivity.ShowReadmeOnStart": "true",
+-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+-    "settings.editor.selected.configurable": "vcs.Git"
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;
+   }
+-}]]></component>
++}</component>
+   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+   <component name="TaskManager">
+     <task active="true" id="Default" summary="Default task">
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"CompilerConfiguration\">\r\n    <annotationProcessing>\r\n      <profile name=\"Maven default annotation processors profile\" enabled=\"true\">\r\n        <sourceOutputDir name=\"target/generated-sources/annotations\" />\r\n        <sourceTestOutputDir name=\"target/generated-test-sources/test-annotations\" />\r\n        <outputRelativeToContentRoot value=\"true\" />\r\n        <module name=\"client\" />\r\n      </profile>\r\n    </annotationProcessing>\r\n    <bytecodeTargetLevel>\r\n      <module name=\"client\" target=\"11\" />\r\n    </bytecodeTargetLevel>\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+--- a/.idea/compiler.xml	(revision 83113d5a52fdc9c200138b63758ded0707c9c450)
++++ b/.idea/compiler.xml	(date 1670772298428)
+@@ -7,10 +7,12 @@
+         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+         <outputRelativeToContentRoot value="true" />
+         <module name="client" />
++        <module name="prova_importMatch" />
+       </profile>
+     </annotationProcessing>
+     <bytecodeTargetLevel>
+       <module name="client" target="11" />
++      <module name="prova_importMatch" target="19" />
+     </bytecodeTargetLevel>
+   </component>
+ </project>
+\ No newline at end of file
+Index: .idea/encodings.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<project version=\"4\">\r\n  <component name=\"Encoding\">\r\n    <file url=\"file://$PROJECT_DIR$/client/src/main/java\" charset=\"UTF-8\" />\r\n    <file url=\"file://$PROJECT_DIR$/client/src/main/resources\" charset=\"UTF-8\" />\r\n  </component>\r\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/encodings.xml b/.idea/encodings.xml
+--- a/.idea/encodings.xml	(revision 83113d5a52fdc9c200138b63758ded0707c9c450)
++++ b/.idea/encodings.xml	(date 1670772298448)
+@@ -3,5 +3,7 @@
+   <component name="Encoding">
+     <file url="file://$PROJECT_DIR$/client/src/main/java" charset="UTF-8" />
+     <file url="file://$PROJECT_DIR$/client/src/main/resources" charset="UTF-8" />
++    <file url="file://$PROJECT_DIR$/prova_importMatch/src/main/java" charset="UTF-8" />
++    <file url="file://$PROJECT_DIR$/prova_importMatch/src/main/resources" charset="UTF-8" />
+   </component>
+ </project>
+\ No newline at end of file
