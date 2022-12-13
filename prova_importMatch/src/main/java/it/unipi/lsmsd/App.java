@@ -166,8 +166,7 @@ public class App
             String  xA= (String) elem.get("xA");
             System.out.println(xA);
 
-            String  xGChain= (String) elem.get("xGChain");
-            System.out.println(xGChain);
+
 
             String  xGBuildup= (String) elem.get("xGBuildup");
             System.out.println(xGBuildup);*/
