@@ -7,10 +7,13 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="client" />
+        <module name="prova_importMatch" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="client" target="11" />
+      <module name="demo" target="15" />
+      <module name="prova_importMatch" target="19" />
     </bytecodeTargetLevel>
   </component>
 </project>

@@ -3,6 +3,8 @@ package org.openjfx.client;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.openjfx.client.graphics.global;
+import org.openjfx.client.graphics.homePage;
 
 
 /**
