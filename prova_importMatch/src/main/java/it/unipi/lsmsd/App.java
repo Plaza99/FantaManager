@@ -71,7 +71,7 @@ public class App
             playerList.forEach( player -> parsePlayerObject( (JSONObject) player, matchday ,coll) );
 
         } //catch (FileNotFoundException e) {
-        //e.printStackTrace();
+
         //}
         catch (IOException e) {
             e.printStackTrace();
