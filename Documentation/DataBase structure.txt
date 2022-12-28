@@ -52,18 +52,30 @@ DocumentDB
 		{
 			"week":"1",
 			"formation":"442",
-			"players"[19]:...
+			"players"[18]:...
 		},
 
 		{
 			"week":"2",
 			"formation":"442",
-			"players"[19]:...
+			"players"[18]:...
 		},
 
 	]
+	liv_priv: "1", //2 adm, 1 utente normale
+	"Region": "Tuscany",
+	"mail":"example.ex@ex.com",
+	
 }
 
+calculated_matchdays:[1,2,3,4,5,6,7,9]
+next_matchday:[10] 
+
+
+mongoDB o redis? 
+redis
+calculated: []int 
+next_matchday: int
 
 
 
