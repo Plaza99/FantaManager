@@ -1,0 +1,61 @@
+[{
+  "_id": {
+    "$oid": "63ad6b4c418ec8c7e12acadf"
+  },
+  "username": "user",
+  "password": "pass",
+  "region": "North Dakota",
+  "credits": 245,
+  "collection": 36,
+  "email": "ema22il@ex.com"
+},{
+  "_id": {
+    "$oid": "63ad6b55418ec8c7e12acae1"
+  },
+  "username": "Marques McKenzie",
+  "password": "pass",
+  "region": "Indiana",
+  "credits": 410,
+  "collection": 33,
+  "email": "email@ex.com"
+},{
+  "_id": {
+    "$oid": "63ad6b5e418ec8c7e12acae3"
+  },
+  "username": "Daryl Gleason",
+  "password": "pass",
+  "region": "Maine",
+  "credits": 147,
+  "collection": 34,
+  "email": "email@ex.com"
+},{
+  "_id": {
+    "$oid": "63ad6b66418ec8c7e12acae5"
+  },
+  "username": "Ron Kihn",
+  "password": "pass",
+  "region": "Tennessee",
+  "credits": 127,
+  "collection": 4,
+  "email": "email@ex.com"
+},{
+  "_id": {
+    "$oid": "63ad6b70418ec8c7e12acae7"
+  },
+  "username": "Anna Glover I",
+  "password": "pass",
+  "region": "Mississippi",
+  "credits": 177,
+  "collection": 8,
+  "email": "email@ex.com"
+},{
+  "_id": {
+    "$oid": "63ad8ac4418ec8c7e12acaea"
+  },
+  "username": "admin",
+  "password": "pass",
+  "region": "North Dakota",
+  "credits": 999,
+  "collection": 999,
+  "email": "email@ex.com"
+}]
